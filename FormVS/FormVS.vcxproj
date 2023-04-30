@@ -240,6 +240,7 @@
     <ClInclude Include="..\sources\unix.h" />
     <ClInclude Include="..\sources\variable.h" />
     <ClInclude Include="..\sources\vector.h" />
+    <ClInclude Include="..\sources\version.h" />
     <ClInclude Include="..\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

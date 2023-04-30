@@ -1,0 +1,2 @@
+#define REPO_MAJOR_VERSION 5
+#define REPO_MINOR_VERSION 0

@@ -67,7 +67,7 @@
  */
 #ifdef HAVE_CONFIG_H
 	/* We have also version.h. */
-	//#include "version.h"
+	#include "version.h"
 	#ifndef REPO_VERSION
 		#define REPO_VERSION STRINGIFY(REPO_MAJOR_VERSION) "." STRINGIFY(REPO_MINOR_VERSION)
 	#endif
