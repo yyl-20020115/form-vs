@@ -1540,9 +1540,11 @@ static int trappedTerminate = 0;
 /*INTSIGHANDLER : some systems require a signal handler to return an integer,
   so define the macro INTSIGHANDLER if compiler fails:*/
 #ifdef INTSIGHANDLER
-static int onErrSig(int i)
+//static 
+int onErrSig(int i)
 #else
-static VOID onErrSig(int i)
+//static 
+VOID onErrSig(int i)
 #endif
 {
 	if (exitInProgress){
@@ -1679,9 +1681,11 @@ int main(int argc, char **argv)
 	ReserveTempFiles(0);
 	IniFbuffer(AT.fbufnum);
 #endif
+
 	if ( !AM.FromStdin ) PrintHeader(1);
 	IniVars();
 	Globalize(1);
+
 	if ( AM.TimeLimit > 0 ) alarm(AM.TimeLimit);
 	TimeCPU(0);
 	TimeChildren(0);

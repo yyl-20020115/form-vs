@@ -1,26 +1,46 @@
 #include "utils.h"
+
 #ifdef WINDOWS
+#include "config.h"
 #include <windows.h>
+#include <sources/portsignals.h>
+
+HANDLE hTimerQueue = NULL;
+HANDLE hTimer = NULL;
+
+#ifdef TRAPSIGNALS
+#ifdef INTSIGHANDLER
+//static 
+extern int onErrSig(int i);
+#else
+//static 
+extern VOID onErrSig(int i);
+#endif
 
 VOID CALLBACK TimerRoutine(PVOID lpParam, BOOLEAN TimerOrWaitFired)
 {
-    exit(0);
+#ifdef TRAPSIGNALS
+    onErrSig(SIGALRM);
+#endif
 }
+#endif
+
 unsigned int alarm(unsigned int seconds)
 {
-    HANDLE hTimerQueue = CreateTimerQueue();
+#ifdef TRAPSIGNALS
     if (NULL == hTimerQueue)
     {
-        return 0;
+        hTimerQueue = CreateTimerQueue();
     }
-    HANDLE hTimer = 0;
-    // Set a timer to call the timer routine in 10 seconds.
-    if (!CreateTimerQueueTimer(&hTimer, hTimerQueue,
-        (WAITORTIMERCALLBACK)TimerRoutine, 0, seconds*1000, 0, 0))
-    {
-        return 0;
+    if (seconds == 0 && hTimer!=NULL) {
+        CloseHandle(hTimer);
+        hTimer = NULL;
     }
-
-	return seconds;
+    if (hTimerQueue != NULL && CreateTimerQueueTimer(&hTimer, hTimerQueue,
+        (WAITORTIMERCALLBACK)TimerRoutine, 0, seconds * 1000, 0, 0)) {
+        return seconds;
+    }
+#endif
+    return 0;
 }
 #endif
