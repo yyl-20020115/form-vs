@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msmpi.lib;libgmp.lib;libmpf.lib;libmpn.lib;libmpz.lib;libmpq.lib;libprintf.lib;libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msmpi.lib;libgmp\libgmp.lib;libmpf\libmpf.lib;libmpn\libmpn.lib;libmpz\libmpz.lib;libmpq\libmpq.lib;libprintf\libprintf.lib;libscanf\libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msmpi.lib;libgmp.lib;libmpf.lib;libmpn.lib;libmpz.lib;libmpq.lib;libprintf.lib;libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msmpi.lib;libgmp\libgmp.lib;libmpf\libmpf.lib;libmpn\libmpn.lib;libmpz\libmpz.lib;libmpq\libmpq.lib;libprintf\libprintf.lib;libscanf\libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msmpi.lib;libgmp.lib;libmpf.lib;libmpn.lib;libmpz.lib;libmpq.lib;libprintf.lib;libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msmpi.lib;libgmp\libgmp.lib;libmpf\libmpf.lib;libmpn\libmpn.lib;libmpz\libmpz.lib;libmpq\libmpq.lib;libprintf\libprintf.lib;libscanf\libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +147,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>msmpi.lib;libgmp.lib;libmpf.lib;libmpn.lib;libmpz.lib;libmpq.lib;libprintf.lib;libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msmpi.lib;libgmp\libgmp.lib;libmpf\libmpf.lib;libmpn\libmpn.lib;libmpz\libmpz.lib;libmpq\libmpq.lib;libprintf\libprintf.lib;libscanf\libscanf.lib;mpfr-4.1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
