@@ -37,7 +37,10 @@
 //#define DEBUG_MORE
 //#define DEBUG_MCTS
 //#define DEBUG_GREEDY
+#ifndef HAVE_CONFIG_H
 #define HAVE_CONFIG_H
+#endif
+
 #ifdef HAVE_CONFIG_H
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
