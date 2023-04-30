@@ -1,0 +1,1367 @@
+
+\chapter{Functions}
+\label{functions}
+
+%--#[ General :
+
+\noindent Functions\index{function} are objects that can have arguments. 
+There exist several types of functions in \FORM. First there is the 
+distinction between commuting\index{commuting} and 
+noncommuting\index{noncommuting} functions. Commuting functions commute 
+with all other objects. This property is used by the normalization routines 
+that bring terms into standard form. Noncommuting functions do not commute 
+necessarily with other noncommuting functions. They do however commute with 
+objects that are considered to be commuting, like symbols, vectors and 
+commuting functions. Various instances of the same noncommuting function 
+but with different arguments do not commute either.
+
+\noindent The next subdivision of the category of functions is in regular 
+functions\index{function!regular}, tensors\index{tensor} and 
+tables\index{table}. Tensors are special functions that can have only 
+indices or vectors for their arguments. If an argument is a vector, it is 
+assumed that this vector is there as the result of an index contraction. 
+Tables are functions with automatic substitution rules. A table must have 
+at least one table\index{table index} index\index{index!table}. Each time 
+during normalization \FORM\ will check whether an instance of a table can be 
+substituted. This means that undefined table elements will slow the program 
+down somewhat.
+
+\noindent All the various types of functions are declared with their own 
+declaration statements. These are described in the chapter for the 
+statements (see chapter~\ref{statements}).
+
+%--#] General : 
+%--#[ Wildcards :
+
+One of the useful properties of functions is the 
+wildcarding\index{wildcard} of their arguments during pattern matching. The 
+following argument wildcards are possible:
+
+\leftvitem{2cm}{x?}
+\rightvitem{14cm}{Here x is a symbol. This symbol can match either a 
+symbol, any numerical argument, or a complete subexpression argument that 
+is not vectorlike or indexlike.}
+
+\leftvitem{2cm}{i?}
+\rightvitem{14cm}{Here i is an index. This index can match either an index, 
+a vector (actually the dummy\index{dummy} index\index{index!dummy} of the 
+vector that was contracted), or a complete subexpression that is vector like 
+(again actually the contracted dummy index).}
+
+\leftvitem{2cm}{v?}
+\rightvitem{14cm}{Here v is a vector. This vector can match either a vector 
+or a complete subexpression that is vector like.}
+
+\leftvitem{2cm}{f?}
+\rightvitem{14cm}{Here f is any functiontype. This function can match any 
+function. It is the responsibility of the user to avoid problems in the 
+right-hand side if f happens to match a tensor.}
+
+\leftvitem{2cm}{?a}
+\rightvitem{14cm}{This is an argument\index{argument field} field 
+wildcard\index{wildcard!argument field}. This can match a 
+complete set of arguments. The set can be empty. Argument field wildcards 
+have a name that starts with a question mark followed by a name. They do 
+not have to be declared as there cannot be confusion.}
+
+%--#] Wildcards : 
+
+\noindent In addition to the above syntax \FORM\ knows a number of special 
+functions with well defined properties. All these functions have a name 
+that ends in an underscore. In addition the names of these built in objects 
+are case insensitive. This means for instance that the factorial function 
+can be referred to as \verb:fac_:, \verb:Fac_: or \verb:FAC_: or whatever 
+the user considers more readable. The built in functions are:
+
+%--#[ abs_ :
+
+\section{abs\_}\index{abs\_}\index{function!abs\_}
+\label{funabs}
+\noindent With one argument that is numerical it evaluates into the 
+absolute value of the argument.
+
+%--#] abs_ : 
+%--#[ bernoulli_ :
+
+\section{bernoulli\_}\index{bernoulli\_}\index{function!bernoulli\_}
+\label{funbernoulli}
+\noindent If it has one nonzero integer argument n, it evaluates into 
+the n-th coefficient in the power series expansion of $x/(1-e^{-x})$.
+
+%--#] bernoulli_ : 
+%--#[ binom_ :
+
+\section{binom\_}\index{binom\_}\index{function!binom\_}
+\label{funbinom}
+\noindent binom\_(n,i) $= n!/(i!(n-i)!)$. If the arguments are non 
+integer or negative, no substitution is made.
+
+%--#] binom_ : 
+%--#[ conjg_ :
+
+\section{conjg\_}\index{conjg\_}\index{function!conjg\_}
+\label{funconjg}
+\noindent Currently not doing anything.
+
+%--#] conjg_ : 
+%--#[ content_ :
+
+\section{content\_}\index{content\_}\index{function!content\_}
+\label{funcontent}
+\noindent This function expects the name of a single expression or a dollar 
+variable for its 
+argument. If it finds this the content of this expression or dollar 
+variable is returned. The 
+content is defined as a term that has
+\begin{itemize}
+\item for its numerator the GCD of the numerators of all terms in the 
+expression.
+\item for its denominator the LCM of the denominators of all terms in the 
+expression.
+\item all the common subexpressions in all terms of the expression.
+\item the most negative powers of all symbols and dotproducts with negative 
+powers in the terms of the expression.
+\end{itemize}
+When there are no negative powers and no denominators in the coefficients, 
+this definition of the content co\"{\i}ncides with the classical definition 
+of the content of a polynomial over the integers. Our content has the 
+property that if we divide the expression by it, we are left with an 
+expression of which the coefficients are all integer, there are no negative 
+powers and the GCD of all terms combined is one.
+
+\noindent This function has one limitation. It will not consider 
+noncommuting objects. Neither will it consider denominator functions.
+
+\noindent Caveat: this function is evaluated each time it is encountered. 
+Therefore the best thing is to evaluate it once in the definition of a 
+dollar variable or an expression as in
+\begin{verbatim}
+   #$x = content_(F);
+   Local G = (a+b)^10*$x;
+\end{verbatim}
+Here the content is computed only once. In
+\begin{verbatim}
+   Local G = (a+b)^10*content_(F);
+\end{verbatim}
+11 terms are generated and the content is only worked out when the 
+terms are normalized. This means that it will be evaluated 11 times. If one 
+does not like dollar variables and still wants to evaluate the content only 
+once the code would be
+\begin{verbatim}
+   Local G = ab^10*content_(F);
+   id ab = a+b;
+\end{verbatim}
+because now the term will be normalized before the substitution makes it 
+into eleven terms. This assumes of course that the content does not contain 
+the variable ab.
+
+%--#] content_ : 
+%--#[ count_ :
+
+\section{count\_}\index{count\_}\index{function!count\_}
+\label{funcount}
+\noindent Similar to the count object in the if statement (see 
+\ref{substaif}). This function expects the same arguments as the count 
+object and returns the corresponding count value for the current term.
+
+%--#] count_ : 
+%--#[ d_ :
+
+\section{d\_}\index{d\_}\index{function!d\_}
+\label{fund}
+\noindent The kronecker\index{kronecker} delta\index{delta!kronecker}. 
+Should have two indices for arguments. Often indicated as 
+$\delta^{\mu\nu}$. In automatic summation over the indices the d\_ often 
+vanishes again as in
+\verb:d_(mu,nu)*p(mu)*q(nu): $\rightarrow$ \verb:p.q: and similar 
+replacements. Internally this object is treated in a rather special way. 
+Hence it will not match a function wildcard.
+
+%--#] d_ : 
+%--#[ dd_ :
+
+\section{dd\_}\index{dd\_}\index{function!dd\_}
+\label{fundd}
+\noindent This is a combinatorics\index{combinatorics} function. The tensor 
+dd\_ with an even number of indices is equal to the totally symmetric 
+tensor built up from products of kronecker delta's. Each term in this 
+symmetric combination is normalized to one. In principle there are 
+$n!/(2^{n/2}(n/2)!$ terms in this combination. The profit comes when some 
+or all the indices are contracted with vectors and some of these vectors 
+are identical. In that case \FORM\ will use combinatorics to generate only 
+different terms, each with the proper prefactor. This can result in great 
+time and space savings.
+
+%--#] dd_ : 
+%--#[ delta_ :
+
+\section{delta\_}\index{delta\_}\index{function!delta\_}
+\label{fundelta}
+\noindent With one numerical argument the result is one if 
+the argument is zero and zero otherwise. With two arguments the result is 
+one if the arguments are numerical and identical. If they are numerical and 
+they differ the result is zero. In all other cases nothing is done.
+
+%--#] delta_ : 
+%--#[ deltap_ :
+
+\section{deltap\_}\index{deltap\_}\index{function!deltap\_}
+\label{fundeltap}
+\noindent If one argument and it is numerical the result is zero if 
+the argument is zero and one otherwise. If two arguments, the result is 
+zero if the arguments are numerical and identical. If they are numerical and 
+they differ the result is one. In all other cases nothing is done.
+
+%--#] deltap_ : 
+%--#[ denom_ :
+
+\section{denom\_}\index{denom\_}\index{function!denom\_}
+\label{fundenom}
+\noindent Internal function to describe denominators. Has a single 
+argument. \verb:den(a+b): is printed as \verb:1/(a+b):.
+
+%--#] denom_ : 
+%--#[ diagrams_ :
+%
+%\section{diagrams\_}\index{diagrams\_}\index{function!diagrams\_}
+%\label{fundiagrams}
+%\noindent For a description of this function, please see the section on 
+%diagrams~\ref{diagrams}.
+%
+%--#] diagrams_ : 
+%--#[ distrib_ :
+
+\section{distrib\_}\index{distrib\_}\index{function!distrib\_}
+\label{fundistrib}
+\noindent This is a combinatorics\index{combinatorics} function. It should 
+have at least five arguments. If we have
+\begin{verbatim}
+    distrib_(type,n,f1,f2,x1,...,xm)
+\end{verbatim}
+with type and n integers, f1 and f2 functions and then a number of 
+arguments there can be action if $-2 \le$ type $\le 2$. The typical action 
+is that the arguments \verb:x1,...,xm: will be divided over the two 
+functions in all possible ways. For each possibility a new term is 
+generated. The relative order of the arguments is kept. If type is negative 
+it is assumed that the collection of x-arguments is 
+antisymmetric\index{antisymmetric} and hence the number of permutations 
+needed to make the split will determine whether there will be a minus sign 
+on the resulting term. When type is zero all possible divisions are 
+generated. Hence there will be $2^m$ divisions. The second argument is then 
+not relevant. If type is 1 or -1 the second parameter says that the first 
+function should obtain n arguments. The remaining arguments go to the 
+second function. If type is 2 or -2 the second function should obtain n 
+arguments. Example:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_distrib_1)
+\begin{verbatim}
+    Symbols x1,...,x4;
+    CFunctions f,f1,f2;
+    Local F = f(x1,...,x4);
+    id  f(?a) = distrib_(-1,2,f1,f2,?a);
+    Print +s;
+    .end
+
+   F =
+       + f1(x1,x2)*f2(x3,x4)
+       - f1(x1,x3)*f2(x2,x4)
+       + f1(x1,x4)*f2(x2,x3)
+       + f1(x2,x3)*f2(x1,x4)
+       - f1(x2,x4)*f2(x1,x3)
+       + f1(x3,x4)*f2(x1,x2)
+      ;
+\end{verbatim}
+When adjacent x-arguments are identical \FORM\ uses combinatorics to avoid 
+generating more terms than necessary.
+
+%--#] distrib_ : 
+%--#[ div_ :
+
+\section{div\_}\index{div\_}\index{function!div\_}
+\label{fundiv}
+\noindent \verb:div_(x1,x2): is replaced by the quotient of the arguments. 
+The arguments can be any valid subexpressions, provided the whole function 
+fits inside a term. When an argument is only an active expression or a 
+\$-expression it is only expanded during the division. This way the 
+contents of such expressions can exceed the maximum term size. One should 
+however realize that in that case the operation takes place in allocated 
+memory. This function replaces the experimental function 
+polydiv\_\index{polydiv\_}\index{function!polydiv\_} that existed in 
+version 3.
+
+%--#] div_ : 
+%--#[ dum_ :
+
+\section{dum\_}\index{dum\_}\index{function!dum\_}
+\label{fundum}
+\noindent Special function for printing virtual\index{virtual bracket} 
+brackets\index{bracket}. \verb:dum_(a+b): is printed as \verb:(a+b):: the 
+name of this function is not printed!
+
+%--#] dum_ : 
+%--#[ dummy_ :
+
+\section{dummy\_}\index{dummy\_}\index{function!dummy\_}
+\label{fundummy}
+\noindent For internal use only.
+
+%--#] dummy_ : 
+%--#[ dummyten_ :
+
+\section{dummyten\_}\index{dummyten\_}\index{function!dummyten\_}
+\label{fundummyten}
+\noindent For internal use only.
+
+%--#] dummyten_ : 
+%--#[ e_ :
+
+\section{e\_}\index{e\_}\index{function!e\_}
+\label{fune}
+\noindent The Levi-Civita\index{Levi-Civita tensor} 
+tensor\index{tensor!Levi-Civita}. It is a totally 
+antisymmetric\index{antisymmetric} tensor with well defined contraction 
+rules (see \ref{substacontract}).
+
+%--#] e_ : 
+%--#[ edge_ :
+%
+%\section{edge\_}\index{edge\_}\index{function!edge\_}
+%\label{funedge}
+%\noindent For a description of this function, please see the section on 
+%diagrams~\ref{diagrams}.
+%
+%--#] edge_ : 
+%--#[ exp_ :
+
+\section{exp\_}\index{exp\_}\index{function!exp\_}
+\label{funexp}
+\noindent Internal function with two arguments. Represents 
+argument1 to the power argument2. Of course it is printed in the standard 
+power notation.
+
+%--#] exp_ : 
+%--#[ exteuclidean_ :
+
+\section{exteuclidean\_}\index{exteuclidean\_}\index{function!exteuclidean\_}
+\label{funexteuclidean}
+
+\noindent This is a number function. It expects two positive integer 
+arguments. It then computes the Greatest Common Divider of these arguments 
+with the use of the extended Euclidean algorithm. The answer will be in the 
+same function but now there will be four arguments as in:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_exteuclidean_1)
+\begin{verbatim}
+    Symbols x1,x2,x3,x4;
+    Local F = exteuclidean_(54,84);
+    Print;
+    .sort
+
+   F =
+      exteuclidean_(54,84,-3,2);
+
+    id exteuclidean_(x1?,x2?,x3?,x4?) = x1*x3+x2*x4;
+    Print;
+    .end
+
+   F =
+      6;
+\end{verbatim}
+\noindent We can see that we obtain the GCD with the relation that is 
+characteristic for the extended Euclidean algorithm. When the two arguments 
+are relative prime, one obtains the so-called modinverses of these numbers:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_exteuclidean_2)
+\begin{verbatim}
+    Symbols x1,x2,x3,x4,a,b;
+    Local F = exteuclidean_(97,101);
+    Print;
+    .sort
+
+   F =
+      exteuclidean_(97,101,25,-24);
+
+    id exteuclidean_(x1?,x2?,x3?,x4?) = x1*x3+x2*x4
+        +a*mod2_(1/97,101)+b*mod2_(1/101,97);
+    Print;
+    .end
+
+   F =
+      1 - 24*b + 25*a;
+\end{verbatim}
+\noindent Here 25 is the inverse of 97 when we calculate modulus 101 and 
+-24 is the inverse of 101 when we calculate modulus 97.
+
+\noindent This function can be very handy when a calculation has been done 
+modulus various prime numbers and one would like to know the result modulus 
+the product of these numbers. This combination is done with the aid of the 
+Chinese remainder theorem\index{Chinese remainder theorem}:
+\begin{verbatim}
+   #procedure ChineseRemainder(NAME,NAME1,NAME2,M1,M2,PAR)
+   *
+   *   Assumes that NAME1 is an expression mod $M1
+   *   Assumes that NAME2 is an expression mod $M2
+   *   Creates $ch1r and $ch2r with the property that
+   *   the expression NAME = NAME1*$ch1r+NAME2*$ch2rn
+   *   is the corresponding equation mod $M1*$M2
+   *
+   Modulus 0; * we need to switch off previous settings.
+   #$ch1r = exteuclidean_($`M1',$`M2');
+   #inside $ch1r;
+       id exteuclidean_(xxx1?,xxx2?,xxx3?,xxx4?) = xxx2*xxx4;
+   #endinside;
+   #$ch2r = exteuclidean_($`M1',$`M2');
+   #inside $ch2r;
+       id exteuclidean_(xxx1?,xxx2?,xxx3?,xxx4?) = xxx1*xxx3;
+   #endinside;
+   #$MM12 = $`M1'*$`M2';
+   Modulus,plusmin,`$MM12';
+   Local `NAME' = `NAME1i'*$ch1r+`NAME2i'*$ch2r;
+   .sort
+   *
+   #endprocedure
+\end{verbatim}
+
+%--#] exteuclidean_ : 
+%--#[ extrasymbol_ :
+
+\section{extrasymbol\_}\index{extrasymbol\_}\index{function!extrasymbol\_}
+\label{funextrasymbol}
+
+\noindent This function expects a single argument. This argument can be a 
+number or an extra symbol(see \ref{extrasymbols}). In either case the 
+function is replaced by the expression that the corresponding extra symbol 
+stands for.
+
+\noindent If there are more arguments or the argument does not represent a 
+legal extra symbol, no substitution is made.
+
+%--#] extrasymbol_ : 
+%--#[ fac_ :
+
+\section{fac\_}\index{fac\_}\index{function!fac\_}
+\label{funfac}
+\noindent The factorial\index{factorial} function. If it has a single nonzero 
+integer argument n it is replaced by n! but if the result is bigger than 
+the maximum allowable number an error will result.
+
+%--#] fac_ : 
+%--#[ factorin_ :
+ 
+\section{factorin\_}\index{factorin\_}\index{function!factorin\_}
+\label{funfactorin}
+\noindent When the argument is a single \$-variable\index{\$-variable} or 
+an expression\index{expression} the function is replaced by the common 
+factor in the terms of that \verb:$:-variable or expression. This common 
+factor consists in the first place of all symbolic objects that occur in 
+all terms. In addition the numerical factor consists of the GCD\index{GCD} 
+of all numerators and the LCM\index{LCM} of all denominators. Hence if the 
+\verb:$:-variable or expression is divided by the result of factorin\_ all 
+coefficients become integer.
+
+%--#] factorin_ : 
+%--#[ farg_ :
+
+\section{farg\_}\index{farg\_}\index{function!farg\_}
+\label{funfarg}
+\noindent For internal use only.
+
+%--#] farg_ : 
+%--#[ firstbracket_ :
+
+\section{firstbracket\_}\index{firstbracket\_}\index{function!firstbracket\_}
+\label{funfirstbracket}
+\noindent In the case that there is a single argument and this 
+single argument is the name of an expression, this function is replaced by 
+the part that is outside brackets in the first term of the expression. If 
+there are no brackets the function is replaced by one.
+
+%--#] firstbracket_ : 
+%--#[ firstterm_ :
+
+\section{firstterm\_}\index{firstterm\_}\index{function!firstterm\_}
+\label{funfirstterm}
+
+\noindent This function expects the name of an expression or a dollar 
+variable for its (single) argument. It will return the first term in this 
+expression or dollar variable. When it has to obtain the first term of an 
+expression, FORM uses the expression in the representation in which it was 
+stored at the end of the previous module. If the expression did not exist 
+in the previous module, it will attempt to use the expression as defined 
+and processed in the current expression. If the expression has only been 
+defined in the current module and has not yet been processed (as is the 
+case when referring to the first term in the current expression) the answer 
+will be unspecified. This use is considered illegal, even though it does 
+not generate an error message.
+
+%--#] firstterm_ : 
+%--#[ g5_ :
+
+\section{g5\_}\index{g5\_}\index{function!g5\_}
+\label{fungfive}
+\noindent The $\gamma_5$ Dirac gamma matrix. We assume here that it 
+anticommutes with the other Dirac\index{Dirac} gamma\index{gamma matrices} 
+matrices. Anybody who does not like that should program private libraries 
+(this should not be too difficult with the cycle symmetric functions 
+(see~\ref{substafunctions}). There should be a single index to indicate 
+the spinline.
+
+%--#] g5_ : 
+%--#[ g6_ :
+
+\section{g6\_}\index{g6\_}\index{function!g6\_}
+\label{fungsix}
+\noindent There should be a single index to indicate the spinline. 
+As in Schoonschip\index{Schoonschip} we use $\gamma_6 = 1+\gamma_5$.
+
+%--#] g6_ : 
+%--#[ g7_ :
+
+\section{g7\_}\index{g7\_}\index{function!g7\_}
+\label{fungseven}
+\noindent There should be a single index to indicate the spinline. 
+As in Schoonschip\index{Schoonschip} we use $\gamma_7 = 1-\gamma_5$.
+
+%--#] g7_ : 
+%--#[ g_ :
+
+\section{g\_}\index{g\_}\index{function!g\_}
+\label{fung}
+\noindent The Dirac\index{Dirac} gamma\index{gamma matrices} matrix. Its 
+first argument should be an index (either symbolic or numeric). Then follow 
+zero, one or more indices to indicate a string of gamma matrices that 
+belong together. Gamma matrices with the same first index are considered to 
+belong together, but as long as the indices are symbolic no assumptions are 
+made about whether they go together or not. Hence no commutation or 
+anticommutation properties are applied for different spin lines unless the 
+spinline indices are both numeric.
+
+%--#] g_ : 
+%--#[ gcd_ :
+
+\section{gcd\_}\index{gcd\_}\index{function!gcd\_}
+\label{fungcd}
+\noindent \verb:gcd_(x1,...,xn): is replaced by the greatest common divisor 
+of the arguments. The arguments can be any valid subexpressions, provided 
+the whole function fits inside a term. When an argument is only an active 
+expression or a \$-expression it is only expanded during evaluation of the 
+GCD. This way the contents of such expressions can exceed the maximum term 
+size. One should however realize that in that case the operation takes 
+place in allocated memory.
+This function replaces the experimental function 
+polygcd\_\index{polygcd\_}\index{function!polygcd\_} that existed in 
+version 3.
+
+%--#] gcd_ : 
+%--#[ gi_ :
+
+\section{gi\_}\index{gi\_}\index{function!gi\_}
+\label{fungi}
+\noindent The unit Dirac gamma matrix. Should have a single index 
+to indicate its spin line. Its is identical to a regular gamma matrix with 
+no Lorenz indices: \verb:gi_(n) = g_(n):
+
+%--#] gi_ : 
+%--#[ id_ :
+
+\section{id\_}\index{id\_}\index{function!id\_}
+\label{funid}
+\noindent This function is a crossbreed between the 
+replace\_\index{replace\_}~\ref{funreplace} function and the id 
+statement\index{substaidentify}~\ref{substaidentify}. To become active it 
+needs an even number of arguments. The odd numbered arguments can be 
+anything of the types:
+\begin{description}
+\item[] a single symbol, possibly to an integer power.
+\item[] a single dotproducts, possibly to an integer power.
+\item[] a single function, possibly with any number and type of arguments.
+\end{description}
+When \FORM{} encounters an id\_ function the last step of normalizing a term 
+is to replace the id function by a number substitutions in which the odd 
+arguments are replaced by the following even arguments. These are not 
+wildcard substitutions as in the replace\_ function, but substitutions as 
+in regular id statements. The matching of the odd arguments is done in a 
+single step as in an id-al construction~\ref{substaalso}. Hence
+\begin{verbatim}
+    id_(x^2,y+z,y,u+v,x,z+u)
+\end{verbatim}
+effectively becomes
+\begin{verbatim}
+    id x^2 = y+z;
+    al y = u+v;
+    al x = z+u;
+\end{verbatim}
+\FORM{} treats multiple occurrences of the id\_ function one at a time. It 
+takes the leftmost occurrence first, takes the patterns from the term, 
+expands the right hand sides, tries to normalize the resulting terms and 
+only then continues with the next id\_ function. For this reason the id\_ 
+function is noncommuting.
+
+%--#] id_ : 
+%--#[ integer_ :
+
+\section{integer\_}\index{integer\_}\index{function!integer\_}
+\label{funinteger}
+\noindent This is a rounding\index{rounding} function. It should have 
+either one or two arguments. If there is a single argument and it is 
+numeric, it will be rounded down to become an integer. If there are two 
+arguments of which the first is numeric and the second is either 1, 0 or 
+-1, the result will be the rounded value of the first argument. If the 
+second argument is 1, the rounding will be down, when it is -1, the 
+rounding will be up and when it is zero the rounding will be towards zero. 
+In all other cases nothing is done.
+
+%--#] integer_ : 
+%--#[ inverse_ :
+
+\section{inverse\_}\index{inverse\_}\index{function!inverse\_}
+\label{funinverse}
+\noindent \verb:inverse_(x1,x2): expects two arguments which are 
+polynomials in the same single variable. The return expression $x_3$ 
+has the property that $x_1 x_3$ divided by $x_2$ has remainder 1. Or in 
+other words: $x_3$ is the inverse of $x_1$ modulus $x_2$.
+The arguments can be any valid subexpressions, provided the whole function 
+fits inside a term. When an argument is an active expression or a 
+\$-expression it is only expanded during the division. This way the 
+contents of such expressions can exceed the maximum term size. One should 
+however realize that in that case the operation takes place in allocated 
+memory. 
+
+%--#] inverse_ : 
+%--#[ invfac_ :
+
+\section{invfac\_}\index{invfac\_}\index{function!invfac\_}
+\label{funinvfac}
+\noindent One divided by the factorial\index{factorial} function. If it has 
+a single nonzero integer argument n, it is replaced by 1/n!, but if this 
+results in a number bigger than the maximum allowable number an error will 
+result.
+
+%--#] invfac_ : 
+%--#[ makerational_ :
+
+\section{makerational\_}\index{makerational\_}\index{function!makerational\_}
+\label{funmakerational}
+
+\noindent This function takes two arguments. Both are integers. We assume 
+calculus modulus the second argument. The function is then replaced by a 
+fraction of which both elements are less than the square root of the second 
+argument and that, in calculus modulus this second number would give the 
+same result as the first number modulus the second number. Example:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_makerational_1)
+\begin{verbatim}
+    #$m = prime_(1);
+    #write <> "The prime number is %$",$m
+The prime number is 2147483587
+    L	F = MakeRational_(12345678,$m);
+    Print;
+    .sort
+
+   F =
+      9719/38790;
+
+    Modulus `$m';
+    Print;
+    .end
+
+   F =
+      12345678;
+\end{verbatim}
+\noindent This function can be used to reconstruct fractions when calculus 
+has been done modulus one or more prime numbers.
+
+%--#] makerational_ : 
+%--#[ match_ :
+
+\section{match\_}\index{match\_}\index{function!match\_}
+\label{funmatch}
+\noindent Currently not active. Replaced automatically by 1.
+
+%--#] match_ : 
+%--#[ max_ :
+
+\section{max\_}\index{max\_}\index{function!max\_}
+\label{funmax}
+\noindent If all its arguments are numeric, this function returns 
+the maximum value of these arguments.
+
+%--#] max_ : 
+%--#[ maxpowerof_ :
+
+\section{maxpowerof\_}\index{maxpowerof\_}\index{function!maxpowerof\_}
+\label{funmaxpowerof}
+\noindent If this function has a single argument that is a symbol, it 
+returns the maximum power restriction of this symbol. If none was given it 
+will be the installation dependent value MAXPOWER which is 10000 on 
+32\index{32 bits} bit machines and 500000000 on 64\index{64 bits} bit 
+machines.
+
+%--#] maxpowerof_ : 
+%--#[ min_ :
+
+\section{min\_}\index{min\_}\index{function!min\_}
+\label{funmin}
+\noindent If all its arguments are numeric, this function returns 
+the minimum value of these arguments.
+
+%--#] min_ : 
+%--#[ minpowerof_ :
+
+\section{minpowerof\_}\index{minpowerof\_}\index{function!minpowerof\_}
+\label{funminpowerof}
+\noindent If this function has a single argument that is a symbol, it 
+returns the minimum power restriction of this symbol. If none was given it 
+will be the installation dependent value -MAXPOWER which is -10000 on 32 bit 
+machines.
+
+%--#] minpowerof_ : 
+%--#[ mod_ :
+
+\section{mod\_}\index{mod\_}\index{function!mod\_}
+\label{funmod}
+\noindent If there are two integer arguments and the second 
+argument is a positive short integer (less than $2^{15}$ on 32 bit 
+computers and less than $2^{31}$ on 64 bit computers) the return value is 
+the first argument modulus the second. Note that if the second argument is 
+not a prime number and the first argument contains a denominator, division 
+by zero could occur. It is up to the user to avoid such cases. See also the 
+mod2\_ function~\ref{funmod2} and the rem\_ function~\ref{funrem}.
+
+The function has one peculiarity: when the second argument is one, the 
+function is left untouched.
+
+%--#] mod_ : 
+%--#[ mod2_ :
+
+\section{mod2\_}\index{mod2\_}\index{function!mod2\_}
+\label{funmod2}
+\noindent This gives basically the same action as the mod\_ function (see 
+\ref{funmod}), but the answer will be in the range $-[(p-1)/2]$ to 
+$+[(p+1)/2]$.
+
+%--#] mod2_ : 
+%--#[ moebius_ :
+
+\section{moebius\_}\index{moebius\_}\index{function!moebius\_}
+\label{funmoebius}
+\noindent The Moebius function. It has the property:
+\begin{itemize}
+\item moebius\_(1) = 1
+\item moebius\_(n) = 0 if n can be divided by the square of a prime number
+\item moebius\_(n) = 1 if n contains an even number of different prime factors
+\item moebius\_(n) = -1 if n contains an odd number of different prime factors
+\end{itemize}
+The number n must be a positive integer for the evaluation to take place. 
+The argument should be no bigger than can be allowed by the biggest primes 
+in Form. This means for a 64-bit computer arguments above $2^{31}$ may not 
+give a correct result with the current algorithms that try for prime 
+factors. There is a second algorithm that does not suffer from this 
+problem:
+\begin{verbatim}
+    id moebius_(n) = 1-sum_(j,1,n-1,integer_(n/j)*moebius_(j));
+\end{verbatim}
+but this algorithm needs all lower values and hence is inherently 
+quadratic. Therefore we did not use it.
+
+%--#] moebius_ : 
+%--#[ mul_ :
+
+\section{mul\_}\index{mul\_}\index{function!mul\_}
+\label{funmul}
+\noindent \verb|mul_(x,y)| is replaced by \verb|x*y|, but internally
+the multiplication is performed via polynomial routines introduced in
+\FORM{} version 4. This can be faster than the normal way of multiplications
+for big polynomials: e.g., \verb|mul_($x,$y)| where the \$-variables \verb|$x|
+and \verb|$y| store big polynomials.
+
+A drawback is, because the polynomial routines accept only symbols, all
+non-symbolic objects in the operands are temporarily translated to (commuting)
+extra symbols. This process breaks the ordering of non-commutative objects
+in the result.
+
+%--#] mul_ : 
+%--#[ nargs_ :
+
+\section{nargs\_}\index{nargs\_}\index{function!nargs\_}
+\label{funnargs}
+\noindent Is replaced by an integer indicating the number of 
+arguments that the function has.
+
+%--#] nargs_ : 
+%--#[ node_ :
+
+\section{node\_}\index{topologies\_}\index{function!node\_}
+\label{funtonode}
+\noindent For a description of this function, please see the section on 
+diagrams~\ref{diagrams}.
+
+%--#] node_ : 
+%--#[ nterms_ :
+
+\section{nterms\_}\index{nterms\_}\index{function!nterms\_}
+\label{funnterms}
+\noindent If this function has only one argument it is replaced by 
+the number of terms inside this argument.
+
+%--#] nterms_ : 
+%--#[ numfactors_ :
+
+\section{numfactors\_}\index{numfactors\_}\index{function!numfactors\_}
+\label{funnumfactors}
+
+\noindent This function returns the number of factors in a factorized 
+expression (see the chapter on polynomials~\ref{polynomials}) or dollar 
+variable~\ref{dollars}. It expects a single argument which should be the 
+name of an expression or a dollar variable. If the expression or dollar 
+variable has not been factorized, the function returns zero.
+
+%--#] numfactors_ : 
+%--#[ partitions_ :
+
+\section{partitions\_}\index{partitions\_}\index{function!partitions\_}
+\label{funpartitions}
+\noindent This function generates all partitions of a list of arguments into
+$n$ parts. Each part consists of a function name and a size.
+This function exploits symmetries of the arguments to make sure that no argument
+is generated twice. Instead, a combinatorial prefactor is computed.
+
+The syntax distinguishes three cases:
+\begin{verbatim}
+1] partitions_(n,[function,n1,]_1,...,[function,nn,]_n,arguments)
+2] partitions_(n,[function,n1,]_1,...,[function,0],arguments)
+3] partitions_(0,function,n1,arguments)
+\end{verbatim}
+In the first case, the first entry specifies the number of partitions $n$.
+It should be followed by $n$ parts, defined by a function name
+and the number of arguments for that function. The final entries are the arguments
+that will be distributed over the functions.
+The number of arguments should be the same as the sum of
+all the function argument sizes.
+There are no restrictions on the type of arguments.
+
+The second case is the same as the first, except that the last partition
+has a 0 for the size. This means that any leftover arguments are collected
+in this term. Thus \path{partitions_(2,f1,3,f2,0,arguments)} yields the same
+as \texttt{distrib\_(1,3,f1,f2,arguments)}.
+
+The third case, determined by a 0 for the number of partitions followed by one part, spreads
+the arguments over a repeated instance of that part. Thus \path{partitions_(0,f1,2,arguments)} is similar to \texttt{dd\_(arguments)}.
+
+In case of a deviation from the above rules, no action will be taken.
+Some examples are given below:
+\begin{verbatim}
+partitions_(2,f1,2,f2,1,x1,x1,x3) =
+       + f1(x1,x1)*f2(x3) + 2*f1(x1,x3)*f2(x1)
+       ;
+partitions_(3,f1,2,f2,1,f3,0,x1,x1,x1,x2,x2,x2) =
+       + 3*f1(x1,x1)*f2(x1)*f3(x2,x2,x2)
+       + 9*f1(x1,x1)*f2(x2)*f3(x1,x2,x2)
+       + 18*f1(x1,x2)*f2(x1)*f3(x1,x2,x2)
+       + 18*f1(x1,x2)*f2(x2)*f3(x1,x1,x2)
+       + 9*f1(x2,x2)*f2(x1)*f3(x1,x1,x2)
+       + 3*f1(x2,x2)*f2(x2)*f3(x1,x1,x1)
+      ;
+partitions_(0,f1,3,x1,x1,x1,x4,x5,x6) =
+       + f1(x1,x1,x1)*f1(x4,x5,x6)
+       + 3*f1(x1,x1,x4)*f1(x1,x5,x6)
+       + 3*f1(x1,x1,x5)*f1(x1,x4,x6)
+       + 3*f1(x1,x1,x6)*f1(x1,x4,x5)
+      ;
+\end{verbatim}
+
+
+%--#] partitions_ : 
+%--#[ pattern_ :
+
+\section{pattern\_}\index{pattern\_}\index{function!pattern\_}
+\label{funpattern}
+\noindent Currently not active. Replaced automatically by 1.
+
+%--#] pattern_ : 
+%--#[ perm_ :
+
+\section{perm\_}\index{perm\_}\index{function!perm\_}
+\label{funperm}
+\noindent Generates all permutations of the arguments, with exception 
+of the first argument which should be the name of a function. This function 
+will then have the permuted arguments as in:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_perm_1)
+\begin{verbatim}
+    CFunction f;
+    Symbols x1,...,x3;
+    Local F = perm_(f,x1,x2,x3);
+    Print +s;
+    .end
+
+   F =
+       + f(x1,x2,x3)
+       + f(x1,x3,x2)
+       + f(x2,x1,x3)
+       + f(x2,x3,x1)
+       + f(x3,x1,x2)
+       + f(x3,x2,x1)
+       ;
+\end{verbatim}
+The permutations are generated with an algorithm that takes subsequent 
+cyclic permutations. If one puts a nonzero integer before the function 
+argument the output terms will be multiplied by -1 when the permutation is 
+odd.
+
+When the function name is the only argument the answer will be just this 
+function without arguments. One could argue that technically the answer 
+should be zero, but this way the attention of the user may be attracted to 
+the occurrence which might not be the case when the term 'just vanishes'. 
+It is however rather simple to add a statement that makes such a function 
+zero.
+
+%--#] perm_ : 
+%--#[ poly_ :
+
+\section{poly\_}\index{poly\_}\index{function!poly\_}
+\label{funpoly}
+\noindent This was an experimental function in version 3. It was for 
+internal use with a whole category of other experimental functions of which 
+the functionality has been replaced by better working functions that are 
+more general. This category included the functions 
+polyadd\_\index{polyadd\_}\index{function!polyadd\_},
+polydiv\_\index{polydiv\_}\index{function!polydiv\_},
+polygcd\_\index{polygcd\_}\index{function!polygcd\_},
+polyintfac\_\index{polyintfac\_}\index{function!polyintfac\_},
+polymul\_\index{polymul\_}\index{function!polymul\_},
+polynorm\_\index{polynorm\_}\index{function!polynorm\_},
+polyrem\_\index{polyrem\_}\index{function!polyrem\_} and
+polysub\_\index{polysub\_}\index{function!polysub\_}.
+See also the chapter on polynomials~\ref{polynomials} and the functions 
+gcd\_~\ref{fungcd}, div\_~\ref{fundiv} and rem\_~\ref{funrem}.
+
+%--#] poly_ : 
+%--#[ prime_ :
+
+\section{prime\_}\index{prime\_}\index{function!prime\_}
+\label{funprime}
+
+\noindent For a number of internal operations FORM needs prime numbers that 
+are neither very large nor very small. Hence it generates, when needed 
+prime numbers that still fit inside a single FORM word, but are maximal 
+within that limitation. Hence for a 64-bits computer in which the largest 
+positive `small' integer in FORM is $2^{31}-1$, it works its way down from 
+there. Once it has determined that a number is prime it stores it in a 
+list. The function prime\_ gives access to this list. The single argument 
+n (n a positive integer) makes that \verb:prime_(n): will be replaced by 
+the n-th member of the list. There is a limitation to the size of the list 
+which is implementation dependent. The number will anyway never be smaller 
+than the maximum power that is allowed for symbols. Example:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_prime_1)
+\begin{verbatim}
+    Symbols x1,x2,x3,x4;
+    ON highfirst;
+    Local F = x1*prime_(1)+x2*prime_(2)
+             +x3*prime_(3)+x4*prime_(4);
+    Print;
+    .end
+
+   F =
+      2147483587*x1 + 2147483579*x2 + 2147483563*x3 + 2147483549*x4;
+\end{verbatim}
+This function is useful when calculations generate very large intermediate 
+coefficients, but in the end the answer is relatively simple again. In that 
+case one can do the calculation modulus one or more prime numbers. If more 
+prime numbers are used the Chinese remainder theorem\index{Chinese 
+remainder theorem}. can be used (see the exteuclidean\_ 
+function~\ref{funexteuclidean} to combine the results and the 
+makerational\_ function~\ref{funmakerational} can be used if fractions have 
+to be reconstructed. An example of this kind of use is given in the simple 
+Groebner basis procedure that is in the packages library in the FORM site.
+
+%--#] prime_ : 
+%--#[ putfirst_ :
+
+\section{putfirst\_}\index{putfirst\_}\index{function!putfirst\_}
+\label{funputfirst}
+
+\noindent 
+This function allows one to select a given argument by its number. The 
+syntax is:
+\begin{verbatim}
+      putfirst_(functionname,numberofargument,arguments.....);
+\end{verbatim}
+It will select the indicated argument in the argument field indicated by 
+arguments and output this as the first argument in the indicated function. 
+This argument will then be followed by the remaining arguments.
+Example:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_putfirst_1)
+\begin{verbatim}
+    S   a,a1,...,a10;
+    CF  f,g;
+    L   F = g(a,a1,...,a10);
+    id  g(?a) = putfirst_(f,4,?a);
+    Print;
+    .end
+   F =
+      f(a3,a,a1,a2,a4,a5,a6,a7,a8,a9,a10);
+\end{verbatim}
+
+%--#] putfirst_ : 
+%--#[ random_ :
+
+\section{random\_}\index{random\_}\index{function!random\_}
+\label{funrandom}
+\noindent A random number generator. When the function has a single 
+positive integer argument, the function will return a pseudo random number 
+in the range of one to that number inclusive. Hence one can imitate a die 
+roll with the call random\_(6). The program uses a random number generator 
+as described in vol 2 of the "Art of computer programming, vol2" by D. 
+Knuth with the parameters set at 89,38 to give as long a cycle as possible. 
+For very large numbers the program pastes several random numbers together. 
+The generator can be initialized with the preprocessor 
+\#setrandom~\ref{presetrandom}\index{\#setrandom} instruction. When running 
+with TFORM or ParFORM each worker runs an independent generator with its 
+own seed. The seeds of the workers are derived from the seed of the master 
+and the number of the worker in a non-trivial way. It should be noted 
+however that with workers it may be impossible to reproduce previous runs 
+as it is non-deterministic which term ends up in which worker.
+
+%--#] random_ : 
+%--#[ ranperm_ :
+
+\section{ranperm\_}\index{ranperm\_}\index{function!ranperm\_}
+\label{funranperm}
+\noindent Generates a random permutation of the arguments, with exception 
+of the first argument which should be the name of a function. This function 
+will then have the permuted arguments as in:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_ranperm_1)
+\begin{verbatim}
+    CFunction f;
+    Symbols x1,...,x5;
+    Local F = ranperm_(f,1,2,3,4,5,6)
+             +ranperm_(f,x1,x2,x3+x1,x4,x5);
+    Print +s;
+    .end
+
+   F =
+       + f(x5,x1,x3 + x1,x4,x2)
+       + f(3,1,6,2,4,5)
+      ;
+\end{verbatim}
+The permutation is generated with the same random number generator that is 
+used by the function 
+random\_~\ref{funrandom}\index{random}\index{function!random\_} and hence 
+is susceptible to the same initialization procedure that can be executed 
+with the \#setrandom~\ref{presetrandom}\index{setrandom} instruction.
+
+%--#] ranperm_ : 
+%--#[ rem_ :
+
+\section{rem\_}\index{rem\_}\index{function!rem\_}
+\label{funrem}
+\noindent \verb:rem_(x1,x2): is replaced by the remainder of the division 
+of $x_1$ by $x_2$. The arguments can be any valid subexpressions, provided 
+the whole function fits inside a term. When an argument is only an active 
+expression or a \$-expression it is only expanded during the division. This 
+way the contents of such expressions can exceed the maximum term size. One 
+should however realize that in that case the operation takes place in 
+allocated memory.
+This function replaces the experimental function 
+polyrem\_\index{polyrem\_}\index{function!polyrem\_} that existed in 
+version 3.
+
+%--#] rem_ : 
+%--#[ replace_ :
+
+\section{replace\_}\index{replace\_}\index{function!replace\_}
+\label{funreplace}
+\noindent This function defines a rather general purpose 
+replacement\index{replacement} mechanism. It should have pairs of 
+arguments. Each pair consists of a single symbol, index, vector or 
+function, followed by what this object should be replaced by in the entire 
+term. Functions can only be replaced by functions, indices only by indices. 
+A vector can be replaced by a single vector or by a vector like expression. 
+A symbol can be replaced by a single symbol, a numerical expression or a 
+complete subexpression that is not index like or vector like. This 
+mechanism is sometimes needed to make replacements in ways that are very 
+hard with the id\index{id} statements because those do not make 
+replacements automatically inside function arguments (see 
+\ref{substaidnew}). It also allows to exchange two variables as the 
+replacements are executed simultaneously by the wildcard substitution 
+mechanism.
+\begin{verbatim}
+    Multiply replace_(x,y,y,x);
+\end{verbatim}
+will exchange x and y. Because there is no definite order in which multiple 
+replace\_ functions are treated, one should not use more than a single one 
+at the same time inside a term. At times multiple replace\_ functions may 
+lead to confusion inside \FORM.
+
+%--#] replace_ : 
+%--#[ reverse_ :
+
+\section{reverse\_}\index{reverse\_}\index{function!reverse\_}
+\label{funreverse}
+\noindent Can only occur as an argument of a function. Is replaced 
+by the reversed string of its own arguments.
+
+%--#] reverse_ : 
+%--#[ root_ :
+
+\section{root\_}\index{root\_}\index{function!root\_}
+\label{funroot}
+\noindent If we have \verb:root_(n,x): and \verb:n: is a positive 
+integer and \verb:x: is a rational number and \verb:y: is a rational number 
+with $y^n = x$ (no imaginary numbers are considered and negative numbers 
+are avoided if possible. Only one root is given) then \verb:root_(n,x): is 
+replaced by \verb:y:. This function was originally intended for internal 
+use. Do not hold it against the author that \verb:root_(2,1): is replaced 
+by \verb:1:. In the case that it is needed the user should manipulate the 
+sign or the complexity properties externally.
+
+%--#] root_ : 
+%--#[ setfun_ :
+
+\section{setfun\_}\index{setfun\_}\index{function!setfun\_}
+\label{funsetfun}
+\noindent Currently not active.
+
+%--#] setfun_ : 
+%--#[ sig_ :
+
+\section{sig\_}\index{sig\_}\index{function!sig\_}
+\label{funsig}
+\noindent Is replaced by the sign of the (numerical) argument, i.e. by -1 
+if there is a single negative argument and by +1 if there is a single 
+numerical argument that is greater or equal to zero.
+
+%--#] sig_ : 
+%--#[ sign_ :
+
+\section{sign\_}\index{sign\_}\index{function!sign\_}
+\label{funsign}
+\noindent \verb:sign_(n): is replaced by \verb:(-1)^n: if n is an 
+integer.
+
+%--#] sign_ : 
+%--#[ sizeof_ :
+
+\section{sizeof\_}\index{sizeof\_}\index{function!sizeof\_}
+\label{funsizeof}
+\noindent If there is a single argument and this argument is the name of an 
+active (or previously active during the current job) expression, the 
+function is replaced by the number\index{number of \FORM words} of \FORM 
+words in this expression. Stored expressions that were entered via a load 
+statement (see \ref{substaload}) are excluded from this because for them 
+this information is not readily available.
+
+%--#] sizeof_ : 
+%--#[ sum_ :
+
+\section{sum\_}\index{sum\_}\index{function!sum\_}
+\label{funsum}
+\noindent General purpose sum\index{sum} function. The first argument should 
+be the summation parameter (a symbol). The second argument is the starting 
+point of summation, the third argument the `upper' limit and a potential 
+fourth argument the increment. These numbers should all be integers. 
+Summation stops when the summation parameter obtains a value that has 
+passed the upper limit. The last argument is the summand, the object to be 
+summed over. It can be any subexpression. If it contains the summation 
+parameter, it will be replaced by its value for each generated term. 
+Examples:
+\begin{verbatim}
+    sum_(j,1,4,sign_(j)*x^j/j)
+    sum_(i,1,9,2,sign_((i-1)/2)*x^i*invfac_(i))
+\end{verbatim}
+
+%--#] sum_ : 
+%--#[ sump_ :
+
+\section{sump\_}\index{sump\_}\index{function!sump\_}
+\label{funsump}
+\noindent Special sum function. Its arguments are like for the 
+sum\_ function, but each new term is the product of the previously 
+generated term with the last argument in which the current value of the 
+summation parameter has been substituted. The first term is always one. 
+Example:
+% THIS EXAMPLE IS PART OF THE TESTSUITE. CHANGES HERE SHOULD BE APPLIED THERE AS
+% WELL! (Fun_sump_1)
+\begin{verbatim}
+    Symbol i,x;
+    Local F = sump_(i,0,5,x/i);
+    Print;
+    .end
+
+   F =
+      1 + x + 1/2*x^2 + 1/6*x^3 + 1/24*x^4 + 1/120*x^5;
+\end{verbatim}
+This function is a leftover from the Schoonschip\index{Schoonschip} days. 
+The ordinary sum\_ function is much more readable.
+
+%--#] sump_ : 
+%--#[ table_ :
+
+\section{table\_}\index{table\_}\index{function!table\_}
+\label{funtable}
+\noindent For action the arguments should be the name of a table and then 
+either the name of a function or one symbol for each dimension of the 
+table. In the case of the list of symbols the return value will be a 
+monomial in the given symbols in which the powers of the symbols correspond 
+to the table indices of the defined table elements with the coefficients 
+the table contents corresponding to those indices. In the case of a 
+function name the return value will be a sum over terms in which the table 
+elements are indicated by arguments in the given function while these 
+functions are then multiplied by the corresponding table elements. This is 
+one way to put a complete table inside an expression and store it (with the 
+save statement of \ref{substasave}) in a binary way for a future run in 
+which the table can be filled again with the 
+fillexpression\index{fillexpression} (see \ref{substafillexpression}) 
+statement. Note that for obvious reasons one should avoid using symbols or 
+functions that also occur inside the table definitions.
+
+%--#] table_ : 
+%--#[ tbl_ :
+
+\section{tbl\_}\index{tbl\_}\index{function!tbl\_}
+\label{funtbl}
+\noindent This function is the `table stub function' as used by the 
+tablebase\index{tablebase} construction. This is explained in chapter 
+\ref{tablebase}. It is mainly for internal use, but it could occur in the 
+output.
+
+%--#] tbl_ : 
+%--#[ term_ :
+
+\section{term\_}\index{term\_}\index{function!term\_}
+\label{funterm}
+\noindent This function has no arguments. It is replaced by the current 
+term. It can be used to load the current term into a dollar variable as in
+\begin{verbatim}
+   $x = term_;
+\end{verbatim}
+
+%--#] term_ : 
+%--#[ termsin_ :
+
+\section{termsin\_}\index{termsin\_}\index{function!termsin\_}
+\label{funtermsin}
+\noindent If there is a single argument and this argument is the name of an 
+active (or previously active during the current job) expression, the 
+function is replaced by the number\index{number of terms} of terms in this 
+expression. Stored expressions that were entered via a load statement (see 
+\ref{substaload}) are excluded from this because for them \FORM\ would have 
+to actually count the terms.
+
+%--#] termsin_ : 
+%--#[ termsinbracket_ :
+ 
+\section{termsinbracket\_}\index{termsinbracket\_}\index{function!termsinbracket\_}
+\label{funtermsinbracket}
+\noindent If there is no argument, or the single argument is zero, the 
+function is replaced by the number of terms in the current 
+bracket\index{bracket}, provided the expression has been bracketed at its 
+last sort and a keep brackets statement (see \ref{substakeep}) has been 
+used. Note that the terms have to be counted. Hence this is a relatively 
+expensive command. More options will be implemented in the future.
+
+%--#] termsinbracket_ : 
+%--#[ theta_ :
+
+\section{theta\_}\index{theta\_}\index{function!theta\_}
+\label{funtheta}
+\noindent If there is a single numerical argument x the function is 
+replaced by one if $x \ge 0$ and by zero if $x < 0$. If there are two 
+numerical arguments $x_1$ and $x_2$ the function is replaced by one if $x_1 
+= x_2$ or if the arguments are in natural order (if theta\_ would be a 
+symmetric function there would be no reason to exchange the arguments) and 
+by zero if the arguments are not in natural order (they would be exchanged 
+in a symmetric function). In all other cases nothing is done.
+
+%--#] theta_ : 
+%--#[ thetap_ :
+
+\section{thetap\_}\index{thetap\_}\index{function!thetap\_}
+\label{funthetap}
+\noindent If there is a single numerical argument x the function is 
+replaced by one if $x > 0$ and by zero if $x \le 0$. If there are two 
+numerical arguments $x_1$ and $x_2$ the function is replaced by zero if $x_1 
+= x_2$ or if the arguments are not in natural order. If the arguments are 
+in natural order the function is replaced by one. In all other cases 
+nothing is done.
+
+%--#] thetap_ : 
+%--#[ topologies_ :
+
+\section{topologies\_}\index{topologies\_}\index{function!topologies\_}
+\label{funtopologies}
+\noindent For a description of this function, please see the section on 
+diagrams~\ref{diagrams}.
+
+%--#] topologies_ : 
+
+%--#[ Reserved names :
+
+\section{Extra reserved names}
+
+\noindent In addition there are some names that have been reserved for 
+future use. At the moment these functions do not do very much. It is hoped 
+that in the future some simplifications of the arguments can be 
+implemented. These functions are:
+
+\leftvitem{3cm}{sqrt\_}\index{sqrt\_}\index{function!sqrt\_}
+\rightvitem{13cm}{The regular square root.}
+
+\leftvitem{3cm}{ln\_}\index{ln\_}\index{function!ln\_}
+\rightvitem{13cm}{The natural logarithm.}
+
+\leftvitem{3cm}{sin\_}\index{sin\_}\index{function!sin\_}
+\rightvitem{13cm}{The sine function.}
+
+\leftvitem{3cm}{cos\_}\index{cos\_}\index{function!cos\_}
+\rightvitem{13cm}{The cosine function.}
+
+\leftvitem{3cm}{tan\_}\index{tan\_}\index{function!tan\_}
+\rightvitem{13cm}{The tangent function.}
+
+\leftvitem{3cm}{asin\_}\index{asin\_}\index{function!asin\_}
+\rightvitem{13cm}{The inverse of the sine function.}
+
+\leftvitem{3cm}{acos\_}\index{acos\_}\index{function!acos\_}
+\rightvitem{13cm}{The inverse of the cosine function.}
+
+\leftvitem{3cm}{atan\_}\index{atan\_}\index{function!atan\_}
+\rightvitem{13cm}{The inverse of the tangent function.}
+
+\leftvitem{3cm}{atan2\_}\index{atan2\_}\index{function!atan2\_}
+\rightvitem{13cm}{Another inverse of the tangent function.}
+
+\leftvitem{3cm}{sinh\_}\index{sinh\_}\index{function!sinh\_}
+\rightvitem{13cm}{The hyperbolic sine function.}
+
+\leftvitem{3cm}{cosh\_}\index{cosh\_}\index{function!cosh\_}
+\rightvitem{13cm}{The hyperbolic cosine function.}
+
+\leftvitem{3cm}{tanh\_}\index{tanh\_}\index{function!tanh\_}
+\rightvitem{13cm}{The hyperbolic tangent function.}
+
+\leftvitem{3cm}{asinh\_}\index{asinh\_}\index{function!asinh\_}
+\rightvitem{13cm}{The inverse of the hyperbolic sine function.}
+
+\leftvitem{3cm}{acosh\_}\index{acosh\_}\index{function!acosh\_}
+\rightvitem{13cm}{The inverse of the hyperbolic cosine function.}
+
+\leftvitem{3cm}{atanh\_}\index{atanh\_}\index{function!atanh\_}
+\rightvitem{13cm}{The inverse of the hyperbolic tangent function.}
+
+\leftvitem{3cm}{li2\_}\index{li2\_}\index{function!li2\_}
+\rightvitem{13cm}{The dilogarithm function.}
+
+\leftvitem{3cm}{lin\_}\index{lin\_}\index{function!lin\_}
+\rightvitem{13cm}{The polylogarithm function.}
+
+\noindent The user is allowed to use these functions, but it could be that 
+in the future they will develop a nontrivial behaviour. Hence caution is 
+required.
+
+%--#] Reserved names : 
+

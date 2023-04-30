@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\sources\argument.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\bugtool.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\checkpoint.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\comexpr.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\compcomm.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\compiler.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\compress.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\comtool.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\diagrams.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\diawrap.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\dict.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\dollar.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\evaluate.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\execute.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\extcmd.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\factor.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\findpat.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\float.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\function.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\gentopo.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\grcc.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\if.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\index.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\lus.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\message.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\minos.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\model.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\module.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\mpi.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\mytime.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\names.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\normal.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\notation.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\opera.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\optimize.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\parallel.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\pattern.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\poly.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\polyfact.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\polygcd.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\polywrap.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\pre.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\proces.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\ratio.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\reken.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\reshuf.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\sch.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\setfile.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\smart.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\sort.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\spectator.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\startup.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\store.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\symmetr.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\tables.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\threads.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\token.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\tools.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\topowrap.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\transform.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\unixfile.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\wildcard.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\sources\comtool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\declare.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\form3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\fsizes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\ftypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\fwin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\gentopo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\grcc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\grccparam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\inivar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\mallocprotect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\minos.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\mpidbg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\mytime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\parallel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\poly.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\polyfact.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\polygcd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\portsignals.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\structs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\unix.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\variable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sources\vector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

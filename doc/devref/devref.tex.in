@@ -1,0 +1,93 @@
+\input{version.tex}
+\def\formversiondesc{\repoversiondesc}
+\def\formdate{\repodate}
+%begin{latexonly}  % To avoid latex2html/latex2html#37
+\providecommand{\formversiondesc}{@VERSION@}
+\providecommand{\repodate}{\today}
+%end{latexonly}
+
+
+\documentclass[11pt,titlepage]{article}
+\usepackage{makeidx}
+
+%begin{latexonly}
+
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{3.0em}}
+\makeatother
+
+% Use hyperref package (hyperlinks) with correct option for pdflatex/latex:
+\usepackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{hyperref}
+\else
+\RequirePackage[hypertex]{hyperref}
+\fi
+% and link indices back to text:
+\hypersetup{hyperindex,pagebackref,pdfpagemode={None},draft=false}
+
+%end{latexonly}
+
+\providecommand{\texorpdfstring}[2]{#1}% htmlonly
+
+\newcommand{\emptypage}{\newpage \thispagestyle{empty} \tiny{\ } \normalsize}
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+\newcommand{\C}[1]{{\tt #1}}
+\newcommand{\LINK}[1]{{\tt #1}}
+
+\newcommand{\FORM}{{\sc FORM}}
+\newcommand{\TFORM}{{\sc TFORM}}
+\newcommand{\PARFORM}{{\sc ParFORM}}
+
+\makeindex
+
+\begin{document}
+
+\thispagestyle{empty}
+\title{\Huge FORM \\ \Large version \formversiondesc \\ \huge Developer's reference manual}
+\date{\formdate}
+\author{J.A.M.Vermaseren et al.}
+\maketitle
+
+\clearemptydoublepage
+\emptypage
+\clearemptydoublepage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\clearemptydoublepage
+\tableofcontents
+\clearemptydoublepage
+\emptypage
+\clearemptydoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Initial remarks}
+
+This document is intended for people who are interested in understanding how \FORM\ works internally,
+how to find and correct bugs in the source code, and how to extend \FORM\ by implementing new
+features.
+
+It is assumed, that the source code is available, either as a package or directly via CVS access to
+the \FORM\ repository. The \FORM\ package contains many files and several subdirectories. The actual
+sources of \FORM, \TFORM, and \PARFORM\ are all in the directory \C{sources} (see section
+\ref{sec:source} for an overview).  Documentation can be found in the directory \C{doc}. The testing
+suite is contained in the directory \C{check}.
+
+\input{@srcdir@/source}
+
+\input{@srcdir@/formrun}
+
+\section{Specific topics}
+
+\input{@srcdir@/indepth}
+
+\input{@srcdir@/testsuite}
+
+\input{@srcdir@/cvs}
+
+\printindex
+
+\end{document}

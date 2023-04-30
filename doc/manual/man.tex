@@ -1,0 +1,122 @@
+\def\formmajorversion{5}
+\def\formminorversion{0beta}
+\def\formdate{4-apr-2023}
+
+
+\documentclass[11pt]{report}
+%\usepackage{index}
+
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\makeatother
+
+\usepackage{makeidx}
+
+% Use hyperref package (hyperlinks) with correct option for pdflatex/latex:
+\usepackage{ifpdf}
+\ifpdf
+\RequirePackage[pdftex]{hyperref}
+\else
+\RequirePackage[hypertex]{hyperref}
+\fi
+% and link indices back to text:
+%\hypersetup{pdfpagemode={None},draft=false} 
+%\hypersetup{hyperindex,pagebackref,pdfpagemode={None},draft=false} 
+
+\newcommand{\pfill}{\hfill}
+\newcommand{\emptypage}{\newpage \thispagestyle{empty} \tiny{\ } \normalsize}
+\newcommand{\lefttabitem}[1]{\noindent{\begin{minipage}[t]{4cm}{#1}
+\end{minipage}}\vspace{1mm}}
+\newcommand{\leftvitem}[2]{\noindent{\begin{minipage}[t]{#1}{#2}
+\end{minipage}}\vspace{1mm}}
+\newcommand{\tabitem}[1]{{\begin{minipage}[t]{12cm}{#1}\end{minipage}}
+    \vspace{1mm}}
+\newcommand{\rightvitem}[2]{{\begin{minipage}[t]{#1}{#2}\end{minipage}}
+    \vspace{1mm}}
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+\textheight 655pt      % Height of text (including footnotes and figures,
+                       % excluding running head and foot).
+                       % Note 1cm = 28.453pt
+\textwidth 16.7cm      % Width of text line.
+%
+% Need to move the origin on the page to centre the block of text:
+%
+\hoffset -2.15cm  \voffset -1.7cm    % settings good for IBM 3812 printer
+
+\def\FORM{{\sc FORM}}
+\def\TFORM{{\sc TFORM}}
+\def\ParFORM{{\sc ParFORM}}
+\def\Andre#1{{\sl #1}}
+\def\Remark#1{{\sl #1}}
+\def\Tr{{\rm Tr}}
+\def\hash{\symbol{"23}}
+\def\sign#1{(\!-\!1)^{#1}}
+\def\binom#1#2{ \left(\!\!
+	 \begin{array}{c} #1 \\ #2 \end{array}\!\! \right) }
+\def\plus{\!+\!}
+\def\minus{\!-\!}
+\def\mydot{\!\!\cdot\!}
+\def\nn{\nonumber \\ &&}
+\def\nne{\nonumber \\ & = &}
+
+\makeindex
+
+\begin{document}
+\begin{titlepage}
+\title{\Huge FORM \\ \Large version \formmajorversion.\formminorversion \\
+  \huge Reference manual}
+\date{\formdate}
+\author{J.A.M.~Vermaseren, T.~Kaneko, B.~Ruijl and T.~Ueda}
+\end{titlepage}
+\maketitle
+%\clearemptydoublepage
+%\pagenumbering{roman}
+%\setcounter{page}{1}
+%\clearemptydoublepage
+%\tableofcontents
+%%\emptypage
+%\clearemptydoublepage
+%\pagenumbering{arabic}
+
+\setcounter{page}{2}
+\clearemptydoublepage
+\emptypage
+\clearemptydoublepage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\clearemptydoublepage
+\tableofcontents
+\clearemptydoublepage
+\emptypage
+\clearemptydoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+%
+\input{startup}
+\input{variable}
+\input{prepro}
+\input{module}
+\input{pattern}
+\input{dollar}
+\input{statements}
+\input{functions}
+\input{bracket}
+\input{polynomials}
+\input{optim}
+\input{tablebas}
+\input{dict}
+\input{gamma}
+\input{metric}
+\input{sorting}
+\input{setup}
+\input{parallel}
+\input{external}
+\input{spectators}
+\input{diagrams}
+\input{float.tex}
+%
+\printindex
+
+\end{document}
+
