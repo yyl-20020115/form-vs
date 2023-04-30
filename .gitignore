@@ -53,3 +53,4 @@ doc/manual/manual/
 /FormVS/x64/Debug
 /build-aux
 /autom4te.cache
+/FormVS/x64/Release
